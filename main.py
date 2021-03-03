@@ -7,19 +7,35 @@ from tkinter import Tk, Canvas, PhotoImage, Button, Label
 import pandas
 from time import sleep
 
+timer = None
+
 
 def runner():
+    global timer
     word_data.random_index()
     en = word_data.df["English"][word_data.index]
     fr = word_data.df["French"][word_data.index]
 
     card.show_front(en)
-    window.after(3000, reveal, fr)
+    timer = window.after(3000, reveal, fr)
 
 def reveal(word):
-    card.show_back(word)
-    window.after(3000, runner)
+    global timer
 
+    card.show_back(word)
+    timer = window.after(3000, runner)
+
+def confirm(e):
+    if word_data.index not in word_data.knowed_index:
+        word_data.knowed_index.append(word_data.index)
+    print(word_data.knowed_index)
+    window.after_cancel(timer)
+    runner()
+
+def unknown(e):
+    global timer
+    window.after_cancel(timer)
+    runner()
 
 
 word_data = Words()
@@ -32,22 +48,12 @@ window.grid_columnconfigure(0, weight = 0,minsize=100)
 window.grid_columnconfigure(1, weight = 0, minsize = 500)
 window.grid_columnconfigure(2, weight = 0,minsize=100)
 card = Card()
-# card.set_word(word_data["French"][word_data.index])
-# sleep(3)
-# card.set_word(word_data.french_word)
-# card.toogle_card()
-
-btnRight = BtnRight()
-btnWrong = BtnWrong()
 
 
+btnRight = BtnRight(confirm)
+btnWrong = BtnWrong(unknown)
 
-# def printH(e):
-#     print("Hello World")
-#     print(e)
-# btnTest = Label(text = "Hello",image = image,bg=BACKGROUND_COLOR)
-# btnTest.bind("<Button-1>", printH)
-# btnTest.grid(column=1, row=2)
+
 
 
 
