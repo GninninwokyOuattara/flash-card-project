@@ -12,9 +12,10 @@ window.grid_columnconfigure(1, weight = 1, minsize = 300)
 window.grid_columnconfigure(2, weight = 1,minsize=20)
 # card = Card()
 # card.pack()
-canvas = Canvas(width=200, height=200)
+canvas = Canvas(width=810, height=530)
+canvas.configure(bg=BACKGROUND_COLOR)
 image = PhotoImage(file="./images/card_back.gif")
-canvas.create_image(0,0, image = image)
+canvas.create_image(410,270, image = image)
 canvas.grid(column=1, row= 1)
 
 
