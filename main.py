@@ -2,7 +2,27 @@ BACKGROUND_COLOR = "#B1DDC6"
 
 from card import Card
 from buttons import BtnRight, BtnWrong
+from words import Words
 from tkinter import Tk, Canvas, PhotoImage, Button, Label
+import pandas
+from time import sleep
+
+
+def runner():
+    word_data.random_index()
+    en = word_data.df["English"][word_data.index]
+    fr = word_data.df["French"][word_data.index]
+
+    card.show_front(en)
+    window.after(3000, reveal, fr)
+
+def reveal(word):
+    card.show_back(word)
+    window.after(3000, runner)
+
+
+
+word_data = Words()
 
 window  = Tk()
 window.title("Flash Card")
@@ -12,9 +32,11 @@ window.grid_columnconfigure(0, weight = 0,minsize=100)
 window.grid_columnconfigure(1, weight = 0, minsize = 500)
 window.grid_columnconfigure(2, weight = 0,minsize=100)
 card = Card()
-# card.grid(column=1, row=0)
+# card.set_word(word_data["French"][word_data.index])
+# sleep(3)
+# card.set_word(word_data.french_word)
+# card.toogle_card()
 
-image = PhotoImage(file="./images/right.gif")
 btnRight = BtnRight()
 btnWrong = BtnWrong()
 
@@ -27,12 +49,7 @@ btnWrong = BtnWrong()
 # btnTest.bind("<Button-1>", printH)
 # btnTest.grid(column=1, row=2)
 
-# btnRight.grid(column=1, row=1, sticky="W")
-# canvas = Canvas(width=810, height=530)
-# canvas.configure(bg=BACKGROUND_COLOR)
-# image = PhotoImage(file="./images/card_back.gif")
-# canvas.create_image(410,270, image = image)
-# canvas.grid(column=1, row= 1)
 
 
+runner()
 window.mainloop()
